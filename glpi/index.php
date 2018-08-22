@@ -5,6 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-its work
+<?php phpinfo(); ?>
 </body>
 </html>
