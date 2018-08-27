@@ -7,7 +7,7 @@ services:
     - "8084:8080"
     - "443:443"
     volumes:
-    - .:/var/www/html
+    - .:/var/www/html/glpi
     - ./nginx.conf:/etc/nginx/conf.d/default.conf
     - ./ssl/cert.crt:/etc/nginx/cert.crt
     - ./ssl/cert.key:/etc/nginx/cert.key
@@ -19,7 +19,7 @@ services:
     ports:
     - "9000:9000"
     volumes:
-    - .:/var/www/html
+    - .:/var/www/html/glpi
   mysql:
     image: mysql:5.7
     ports:
