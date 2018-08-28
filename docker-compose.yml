@@ -15,7 +15,9 @@ services:
     - php
     - mysql
   php:
-    image: php:7.0-fpm
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     ports:
     - "9000:9000"
     volumes:
