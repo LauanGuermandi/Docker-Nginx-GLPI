@@ -1,15 +1,20 @@
-FROM ubuntu:xenial
+FROM php:7.0-fpm
 
-MAINTAINER Lauan "lauanguemandi@gmail.com"
+RUN apt-get update
+RUN apt-get install -y apt-utils libxml2-dev libc-client-dev libkrb5-dev && rm -r /var/lib/apt/lists/*
 
-RUN apt-get update \
-&& apt-get upgrade \
-&& apt-get -yyq install php \
-php-mysql \
-php-ldap \
-php-xmlrpc \
-php-imap \
-php-curl \
-php-gd \
-php-mbstring \
-php-xml \
+RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install opcache
+RUN docker-php-ext-install xmlrpc
+
+RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl && docker-php-ext-install imap
+
+RUN apt-get update && \
+    apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
+    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+    docker-php-ext-install gd
+
+RUN echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apcu.ini
+
+RUN apt-get install -y libldb-dev libldap2-dev
+RUN docker-php-ext-configure ldap --with-ldap=/usr/bin && docker-php-ext-install ldap
