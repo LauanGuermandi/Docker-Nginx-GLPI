@@ -14,7 +14,10 @@ RUN apt-get update && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
 
-RUN echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apcu.ini
+RUN apt-get install libldap2-dev -y && \
+    rm -rf /var/lib/apt/lists/* && \
+    docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
+    docker-php-ext-install ldap
 
-RUN apt-get install -y libldb-dev libldap2-dev
-RUN docker-php-ext-configure ldap --with-ldap=/usr/bin && docker-php-ext-install ldap
+RUN pecl install apcu-beta \
+        && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini
